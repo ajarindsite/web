@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: Adjarindoweb/Adjarindoweb
+  repo: ajarindsite/web
   branch: main
 
 site:
