@@ -2,14 +2,10 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Adjarindo Creative Aksara | Transformasi Digital Zero Code</title>
-    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700;800&display=swap" rel="stylesheet">
-    <!-- Pages CMS Widget (optional, untuk preview) -->
-    <script src="https://cdn.pagescms.org/editor.js" defer></script>
     <style>
         * {
             margin: 0;
@@ -62,7 +58,6 @@
             margin: 0 auto;
             padding: 1.5rem 2rem;
         }
-        /* Navbar */
         .navbar {
             display: flex;
             flex-wrap: wrap;
@@ -73,7 +68,7 @@
             backdrop-filter: blur(12px);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 999;
             border-bottom: 1px solid rgba(255,255,255,0.15);
         }
         body.light .navbar {
@@ -106,53 +101,74 @@
         .nav-links {
             display: flex;
             flex-wrap: wrap;
-            gap: 1.8rem;
+            gap: 1.5rem;
             align-items: center;
         }
-        .nav-links a {
+        .nav-links > a {
             color: inherit;
             text-decoration: none;
             font-weight: 500;
             transition: 0.2s;
+            padding: 0.5rem 0;
         }
-        .nav-links a:hover {
+        .nav-links > a:hover {
             color: #f9b23f;
         }
+        /* DROPDOWN FIX - pakai click instead of hover */
         .dropdown {
-			position: relative;
-			display: inline-block;
-		}
-
-		.dropdown-content {
-			display: none;
-			position: absolute;
-			background: rgba(30, 35, 48, 0.95);
-			backdrop-filter: blur(12px);
-			min-width: 220px;
-			border-radius: 20px;
-			padding: 0.8rem 0;
-			top: 35px;
-			left: -20px;
-			z-index: 1000;
-			border: 1px solid rgba(255,255,255,0.2);
-		}
-
-		.dropdown:hover .dropdown-content {
-			display: block;
-		}
-
-		.dropdown-content a {
-			display: block;
-			padding: 0.6rem 1.2rem;
-			text-decoration: none;
-			color: inherit;
-			transition: 0.2s;
-		}
-
-		.dropdown-content a:hover {
-			background: rgba(249, 178, 63, 0.2);
-			color: #f9b23f;
-		}
+            position: relative;
+            display: inline-block;
+        }
+        .dropbtn {
+            background: transparent;
+            border: none;
+            color: inherit;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 0.5rem 0;
+            font-family: inherit;
+        }
+        .dropbtn i {
+            margin-left: 5px;
+            transition: transform 0.2s;
+        }
+        .dropdown.active .dropbtn i {
+            transform: rotate(180deg);
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: rgba(20, 25, 40, 0.95);
+            backdrop-filter: blur(12px);
+            min-width: 220px;
+            border-radius: 20px;
+            padding: 0.8rem 0;
+            top: 40px;
+            left: -50px;
+            z-index: 1001;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        body.light .dropdown-content {
+            background: rgba(240, 235, 220, 0.95);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .dropdown-content a {
+            display: block;
+            padding: 0.6rem 1.2rem;
+            text-decoration: none;
+            color: inherit;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+        .dropdown-content a:hover {
+            background: rgba(249, 178, 63, 0.2);
+            color: #f9b23f;
+        }
+        .dropdown-content.show {
+            display: block;
+        }
         .theme-toggle {
             background: rgba(255,255,255,0.2);
             border: none;
@@ -172,6 +188,14 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            text-decoration: none;
+        }
+        .btn-outline-light {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.5);
+            padding: 0.8rem 1.6rem;
+            border-radius: 40px;
+            color: inherit;
             text-decoration: none;
         }
         .section-title {
@@ -215,6 +239,10 @@
             background: rgba(0,0,0,0.3);
             backdrop-filter: blur(4px);
             border: 1px solid rgba(255,255,255,0.2);
+            transition: transform 0.2s;
+        }
+        .gallery-item:hover {
+            transform: translateY(-5px);
         }
         .gallery-img {
             width: 100%;
@@ -229,8 +257,10 @@
         .modal {
             display: none;
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: rgba(0,0,0,0.8);
             backdrop-filter: blur(5px);
             z-index: 1000;
@@ -242,17 +272,24 @@
             background: #1e242c;
             border-radius: 32px;
             padding: 1.5rem;
+            text-align: center;
+        }
+        body.light .modal-content {
+            background: #f5f0e6;
+            color: #1e2a32;
         }
         .faq-item {
             margin-bottom: 1.5rem;
             padding: 1rem;
             border-radius: 20px;
             cursor: pointer;
+            transition: 0.2s;
         }
         .faq-question {
             font-weight: 700;
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
         .faq-answer {
             display: none;
@@ -271,6 +308,11 @@
             border: 1px solid rgba(255,255,255,0.3);
             border-radius: 28px;
             color: inherit;
+            font-family: inherit;
+        }
+        body.light input, body.light textarea, body.light select {
+            background: rgba(0,0,0,0.05);
+            border-color: #ccc;
         }
         .whatsapp-float {
             position: fixed;
@@ -287,6 +329,11 @@
             color: white;
             z-index: 99;
             text-decoration: none;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.05);
         }
         footer {
             margin-top: 4rem;
@@ -294,26 +341,25 @@
             text-align: center;
             border-top: 1px solid rgba(255,255,255,0.15);
         }
-        /* Badge CMS Edit */
-        [data-cms-edit] {
-            position: relative;
-        }
-        [data-cms-edit]:hover:after {
-            content: "✏️ Klik untuk edit";
-            position: absolute;
-            top: -25px;
-            right: 0;
-            background: #f9b23f;
-            color: #1f1a12;
-            font-size: 11px;
-            padding: 2px 8px;
-            border-radius: 20px;
-            white-space: nowrap;
+        footer a {
+            color: #f9b23f;
+            text-decoration: none;
         }
         @media (max-width: 800px) {
-            .navbar { flex-direction: column; gap: 12px; }
-            .nav-links { gap: 1rem; }
-            .container { padding: 1rem; }
+            .navbar {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .nav-links {
+                gap: 1rem;
+                justify-content: center;
+            }
+            .container {
+                padding: 1rem;
+            }
+            .dropdown-content {
+                left: -100px;
+            }
         }
     </style>
 </head>
@@ -321,7 +367,6 @@
     <img class="bg-unsplash" src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format" alt="background">
     <div class="overlay-bg"></div>
 
-    <!-- Navbar -->
     <div class="navbar">
         <div class="logo-area">
             <div class="logo-icon"><i class="fas fa-pen-fancy"></i></div>
@@ -333,66 +378,60 @@
         <div class="nav-links">
             <a href="#home">Beranda</a>
             <a href="#program">Program</a>
-            <div class="dropdown">
-                <a href="#">Demo <i class="fas fa-chevron-down"></i></a>
-                <div class="dropdown-content">
+            <div class="dropdown" id="demoDropdown">
+                <button class="dropbtn" id="dropbtn">Demo <i class="fas fa-chevron-down"></i></button>
+                <div class="dropdown-content" id="dropdownContent">
                     <a href="lms-app/"><i class="fas fa-graduation-cap"></i> Demo LMS App</a>
-					<a href="web-personal/"><i class="fas fa-user"></i> Demo Web Personal</a>
-					<a href="keuangan/"><i class="fas fa-chart-line"></i> Demo Web Keuangan</a>
-					<a href="teacher-hub/"><i class="fas fa-chalkboard"></i> Demo Web Teacher Hub</a>
-					<a href="blog/"><i class="fas fa-blog"></i> Demo Web Artikel</a>
-					<a href="cbt/"><i class="fas fa-laptop"></i> Demo Online CBT</a>					
+                    <a href="web-personal/"><i class="fas fa-user"></i> Demo Web Personal</a>
+                    <a href="keuangan/"><i class="fas fa-chart-line"></i> Demo Web Keuangan</a>
+                    <a href="teacher-hub/"><i class="fas fa-chalkboard"></i> Demo Web Teacher Hub</a>
+                    <a href="blog/"><i class="fas fa-blog"></i> Demo Web Artikel</a>
+                    <a href="cbt/"><i class="fas fa-laptop"></i> Demo Online CBT</a>
+                    <a href="video/"><i class="fas fa-video"></i> Video Gallery</a>
                 </div>
             </div>
             <a href="#galeri">Galeri</a>
             <a href="#faq">FAQ</a>
             <a href="#kontak">Kontak</a>
             <a href="disclaimer.html" target="_blank">Legal</a>
-            <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+            <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i> <span id="themeText">Gelap</span></button>
         </div>
     </div>
 
     <div class="container" id="home">
-        <!-- HERO SECTION - editable via Pages CMS -->
         <div class="hero glass-card" style="padding: 3rem 2rem; margin: 2rem 0;">
-            <h1 data-cms-edit="hero.title" style="font-size:2.8rem; font-weight:800;">🚀 Bangun Ekosistem Digital Zero Code, Tanpa Biaya Hosting!</h1>
-            <p data-cms-edit="hero.subtitle" style="font-size:1.2rem; margin:1rem 0; max-width:650px;">Dari web sekolah, LMS, hingga portofolio guru. Zero code + AI + pendampingan tembus HRD. Berizin resmi KBLI 58110/62015/72090.</p>
+            <h1 style="font-size:2.8rem; font-weight:800;">🚀 Bangun Ekosistem Digital Zero Code, Tanpa Biaya Hosting!</h1>
+            <p style="font-size:1.2rem; margin:1rem 0; max-width:650px;">Dari web sekolah, LMS, hingga portofolio guru. Zero code + AI + pendampingan tembus HRD. Berizin resmi KBLI 58110/62015/72090.</p>
             <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
                 <a href="#kontak" class="btn-primary"><i class="fab fa-whatsapp"></i> Konsultasi Gratis via WA</a>
-                <a href="#program" class="btn-outline-light" style="background:transparent; border:1px solid rgba(255,255,255,0.5); padding:0.8rem 1.6rem; border-radius:40px; text-decoration:none; color:inherit;">Jelajahi Program</a>
+                <a href="#program" class="btn-outline-light">Jelajahi Program</a>
             </div>
         </div>
 
-        <!-- KEUNGGULAN JAMSTACK -->
         <div class="glass-card" style="padding: 2rem; margin: 2rem 0;">
             <h2 style="font-size: 1.8rem;">🚀 Teknologi JAMSTACK: Zero Code, Low Cost, High Performance</h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 1.5rem; margin-top: 1.5rem;">
-                <div data-cms-edit="advantages.1"><i class="fas fa-code-branch" style="color:#f9b23f; font-size:1.8rem;"></i><h3>Zero Code</h3><p>Buat web/app tanpa coding, drag & drop dengan Pages CMS</p></div>
-                <div data-cms-edit="advantages.2"><i class="fas fa-coins" style="color:#f9b23f; font-size:1.8rem;"></i><h3>Low Cost</h3><p>Hemat hingga 80% dibanding pengembangan konvensional</p></div>
-                <div data-cms-edit="advantages.3"><i class="fas fa-tachometer-alt" style="color:#f9b23f; font-size:1.8rem;"></i><h3>High Performance</h3><p>Cloudflare + GitHub = kecepatan global & gratis hosting</p></div>
-                <div data-cms-edit="advantages.4"><i class="fas fa-chalkboard-user" style="color:#f9b23f; font-size:1.8rem;"></i><h3>Pendampingan Tembus HRD</h3><p>Workshop + coaching karir untuk lolos seleksi kerja</p></div>
+                <div><i class="fas fa-code-branch" style="color:#f9b23f; font-size:1.8rem;"></i><h3>Zero Code</h3><p>Buat web/app tanpa coding, drag & drop dengan Pages CMS</p></div>
+                <div><i class="fas fa-coins" style="color:#f9b23f; font-size:1.8rem;"></i><h3>Low Cost</h3><p>Hemat hingga 80% dibanding pengembangan konvensional</p></div>
+                <div><i class="fas fa-tachometer-alt" style="color:#f9b23f; font-size:1.8rem;"></i><h3>High Performance</h3><p>Cloudflare + GitHub = kecepatan global & gratis hosting</p></div>
+                <div><i class="fas fa-chalkboard-user" style="color:#f9b23f; font-size:1.8rem;"></i><h3>Pendampingan Tembus HRD</h3><p>Workshop + coaching karir untuk lolos seleksi kerja</p></div>
             </div>
         </div>
 
-        <!-- 3 PROGRAM ANDALAN -->
         <div id="program">
-            <h2 class="section-title" data-cms-edit="programs.section_title">3 Program Andalan</h2>
+            <h2 class="section-title">3 Program Andalan</h2>
             <div class="grid-3">
-                <!-- Program 1 -->
-                <div class="card-program glass-card" data-cms-edit="programs.program_1">
+                <div class="card-program glass-card">
                     <div class="icon-big"><i class="fas fa-school"></i></div>
                     <h3>Paket "Smart School Transformation" <span style="font-size:0.8rem;">(B2B)</span></h3>
                     <p>Digitalisasi sekolah dengan Adjarindo Web Builder (zero-code/AI), workshop guru, dan penerbitan e-book ber-ISBN. Web + guru jago AI + produk literasi digital.</p>
-                    <div style="margin-top:1rem;"><i class="fas fa-check-circle"></i> Web Sekolah/LMS • Workshop • E-book resmi</div>
                 </div>
-                <!-- Program 2 -->
-                <div class="card-program glass-card" data-cms-edit="programs.program_2">
+                <div class="card-program glass-card">
                     <div class="icon-big"><i class="fas fa-briefcase"></i></div>
                     <h3>Ekosistem "Kedinasan & Karir Hub" <span style="font-size:0.8rem;">(B2C)</span></h3>
                     <p>Buku panduan seleksi kedinasan + platform try-out + web portofolio siswa + coaching tembus HRD. Paket buku + akses web + coaching.</p>
                 </div>
-                <!-- Program 3 -->
-                <div class="card-program glass-card" data-cms-edit="programs.program_3">
+                <div class="card-program glass-card">
                     <div class="icon-big"><i class="fas fa-chalkboard-user"></i></div>
                     <h3>Program "Guru Kreatif, Guru Digital" <span style="font-size:0.8rem;">(SaaS+Komunitas)</span></h3>
                     <p>Bootcamp online & web template khusus guru. Co-author buku antologi ber-ISBN untuk angka kredit. Naik pangkat lebih mudah!</p>
@@ -400,29 +439,22 @@
             </div>
         </div>
 
-        <!-- GALERI -->
         <div id="galeri">
-            <h2 class="section-title" data-cms-edit="gallery.section_title">Galeri Kegiatan & Ulasan</h2>
-            <div class="gallery-grid" id="galleryGrid">
-                <!-- Gallery items will be loaded via JS, but also editable via CMS -->
-            </div>
+            <h2 class="section-title">Galeri Kegiatan & Ulasan</h2>
+            <div class="gallery-grid" id="galleryGrid"></div>
         </div>
 
-        <!-- FAQ -->
         <div id="faq">
-            <h2 class="section-title" data-cms-edit="faq.section_title">Frequently Asked Questions</h2>
-            <div id="faqContainer">
-                <!-- FAQ items will be loaded here -->
-            </div>
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div id="faqContainer"></div>
         </div>
 
-        <!-- KONTAK & FORM -->
         <div id="kontak" style="margin-top: 3rem;">
             <div class="glass-card" style="padding: 2rem;">
-                <h2 data-cms-edit="contact.title"><i class="fas fa-envelope-open-text"></i> Hubungi Kami</h2>
-                <p data-cms-edit="contact.address"><i class="fas fa-map-pin"></i> Alamanda Regency, Jl. Kenanga 3 Blok K10/20, Karangsatria, Tambun Utara, Kab. Bekasi</p>
-                <p data-cms-edit="contact.phone"><i class="fab fa-whatsapp"></i> 0857-1090-8070 & 0821-1203-8795</p>
-                <p data-cms-edit="contact.email"><i class="fas fa-envelope"></i> ajarind890@gmail.com</p>
+                <h2><i class="fas fa-envelope-open-text"></i> Hubungi Kami</h2>
+                <p><i class="fas fa-map-pin"></i> Alamanda Regency, Jl. Kenanga 3 Blok K10/20, Karangsatria, Tambun Utara, Kab. Bekasi</p>
+                <p><i class="fab fa-whatsapp"></i> 0857-1090-8070 & 0821-1203-8795</p>
+                <p><i class="fas fa-envelope"></i> ajarind890@gmail.com</p>
                 
                 <form id="registrationForm" style="margin-top:1.5rem;">
                     <input type="text" id="nama" placeholder="Nama Lengkap" required>
@@ -440,16 +472,14 @@
         </div>
 
         <footer>
-            <p>&copy; 2025 Adjarindo Creative Aksara | <a href="disclaimer.html" style="color:#f9b23f;">Disclaimer & Legalitas (KBLI 58110 / 62015 / 72090)</a></p>
+            <p>&copy; 2025 Adjarindo Creative Aksara | <a href="disclaimer.html">Disclaimer & Legalitas (KBLI 58110 / 62015 / 72090)</a></p>
         </footer>
     </div>
 
-    <!-- WA Float -->
     <a href="https://wa.me/6285710908070?text=Halo%20saya%20tertarik%20dengan%20program%20Adjarindo" target="_blank" class="whatsapp-float">
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <!-- Modal Galeri -->
     <div id="galleryModal" class="modal">
         <div class="modal-content glass-card">
             <h3 id="modalTitle"></h3>
@@ -460,7 +490,38 @@
     </div>
 
     <script>
-        // Gallery Data (bisa diedit via CMS dengan attribute data-cms-repeat)
+        // ==================== DROPDOWN FIX (Click-based, not hover) ====================
+        const dropdown = document.getElementById('demoDropdown');
+        const dropbtn = document.getElementById('dropbtn');
+        const dropdownContent = document.getElementById('dropdownContent');
+
+        // Toggle dropdown saat klik tombol
+        dropbtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            dropdown.classList.toggle('active');
+            dropdownContent.classList.toggle('show');
+        });
+
+        // Tutup dropdown saat klik di luar
+        document.addEventListener('click', function(e) {
+            if (!dropdown.contains(e.target)) {
+                dropdown.classList.remove('active');
+                dropdownContent.classList.remove('show');
+            }
+        });
+
+        // Untuk link di dalam dropdown, tetap bisa navigasi normal
+        const dropdownLinks = dropdownContent.querySelectorAll('a');
+        dropdownLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Biarkan link berfungsi normal (navigasi ke halaman)
+                // Tidak perlu preventDefault
+                // Dropdown akan tetap terbuka, tapi setelah pindah halaman akan reset otomatis
+            });
+        });
+
+        // ==================== GALERI ====================
         const galleryData = [
             { title: "Workshop Smart School", desc: "Pendampingan guru dalam mengoperasikan LMS dan pembuatan e-book modul ajar. 60 guru peserta.", img: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&auto=format" },
             { title: "Launching Buku Kedinasan", desc: "Penerbit JP Creative menerbitkan 'Strategi Lolos Seleksi Kedinasan' cetak dan e-book.", img: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&auto=format" },
@@ -469,13 +530,12 @@
         ];
 
         function loadGallery() {
-            const galleryContainer = document.getElementById('galleryGrid');
-            if(!galleryContainer) return;
-            galleryContainer.innerHTML = '';
-            galleryData.forEach((item, idx) => {
+            const container = document.getElementById('galleryGrid');
+            if (!container) return;
+            container.innerHTML = '';
+            galleryData.forEach((item) => {
                 const card = document.createElement('div');
                 card.className = 'gallery-item';
-                card.setAttribute('data-cms-edit', `gallery.item_${idx+1}`);
                 card.innerHTML = `
                     <div class="gallery-img" style="background-image: url('${item.img}');"></div>
                     <div class="gallery-caption"><i class="fas fa-image"></i> ${item.title}</div>
@@ -486,11 +546,15 @@
                     document.getElementById('modalDesc').innerHTML = item.desc;
                     document.getElementById('galleryModal').style.display = 'flex';
                 };
-                galleryContainer.appendChild(card);
+                container.appendChild(card);
             });
         }
 
-        // FAQ Data (bisa diedit via CMS)
+        function closeModal() {
+            document.getElementById('galleryModal').style.display = 'none';
+        }
+
+        // ==================== FAQ ====================
         const faqData = [
             { q: "Apakah Adjarindo lembaga kursus atau pelatihan?", a: "Tidak. Kami beroperasi dengan KBLI Penerbitan (58110), AI Programming (62015), dan Konsultasi Manajemen (72090). Kami BUKAN lembaga pendidikan berizin KBLI 85xxx." },
             { q: "Berapa biaya pembuatan website dengan zero code?", a: "Mulai dari Rp 2.500.000 untuk web landing page. Untuk web sekolah/LMS atau aplikasi custom, disesuaikan dengan kebutuhan. Semua sudah termasuk pendampingan hingga online." },
@@ -499,35 +563,54 @@
         ];
 
         function loadFAQ() {
-            const faqContainer = document.getElementById('faqContainer');
-            if(!faqContainer) return;
-            faqContainer.innerHTML = '';
-            faqData.forEach((item, idx) => {
-                const faqDiv = document.createElement('div');
-                faqDiv.className = 'faq-item glass-card';
-                faqDiv.setAttribute('data-cms-edit', `faq.item_${idx+1}`);
-                faqDiv.innerHTML = `
+            const container = document.getElementById('faqContainer');
+            if (!container) return;
+            container.innerHTML = '';
+            faqData.forEach((item) => {
+                const div = document.createElement('div');
+                div.className = 'faq-item glass-card';
+                div.innerHTML = `
                     <div class="faq-question">${item.q} <i class="fas fa-chevron-down"></i></div>
                     <div class="faq-answer">${item.a}</div>
                 `;
-                faqDiv.onclick = () => faqDiv.classList.toggle('active');
-                faqContainer.appendChild(faqDiv);
+                div.onclick = () => div.classList.toggle('active');
+                container.appendChild(div);
             });
         }
 
-        function closeModal() {
-            document.getElementById('galleryModal').style.display = 'none';
-        }
-
-        // Theme Toggle
+        // ==================== THEME TOGGLE ====================
         const themeToggle = document.getElementById('themeToggle');
-        if(localStorage.getItem('theme') === 'light') document.body.classList.add('light');
+        const themeText = document.getElementById('themeText');
+        
+        function setTheme(theme) {
+            if (theme === 'light') {
+                document.body.classList.add('light');
+                themeText.innerText = 'Terang';
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i> Terang';
+            } else {
+                document.body.classList.remove('light');
+                themeText.innerText = 'Gelap';
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i> Gelap';
+            }
+        }
+        
+        if (localStorage.getItem('theme') === 'light') {
+            setTheme('light');
+        } else {
+            setTheme('dark');
+        }
+        
         themeToggle.onclick = () => {
-            document.body.classList.toggle('light');
-            localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
+            if (document.body.classList.contains('light')) {
+                setTheme('dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                setTheme('light');
+                localStorage.setItem('theme', 'light');
+            }
         };
 
-        // Form Submission ke Email
+        // ==================== FORM SUBMIT ====================
         const form = document.getElementById('registrationForm');
         form.onsubmit = async (e) => {
             e.preventDefault();
@@ -538,26 +621,35 @@
             formData.append('program', document.getElementById('programInterest').value);
             formData.append('pesan', document.getElementById('pesan').value);
             formData.append('_subject', 'Pendaftaran Program Adjarindo');
+            formData.append('_captcha', 'false');
             
             try {
                 const response = await fetch('https://formsubmit.co/ajax/ajarind890@gmail.com', {
                     method: 'POST',
                     body: formData
                 });
-                if(response.ok) {
-                    alert('Pendaftaran berhasil dikirim! Tim kami akan segera menghubungi Anda.');
+                if (response.ok) {
+                    alert('✅ Pendaftaran berhasil dikirim! Tim kami akan segera menghubungi Anda.');
                     form.reset();
                 } else {
-                    alert('Gagal mengirim. Silakan hubungi WA kami langsung.');
+                    alert('❌ Gagal mengirim. Silakan hubungi WA kami langsung: 0857-1090-8070');
                 }
-            } catch(err) {
+            } catch (err) {
                 alert('Error: ' + err.message);
             }
         };
 
-        // Load semua konten dinamis
+        // Load semua konten
         loadGallery();
         loadFAQ();
+
+        // Fix untuk modal click outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('galleryModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
     </script>
 </body>
 </html>
