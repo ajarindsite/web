@@ -1,0 +1,109 @@
+backend:
+  name: github
+  repo: ajarindsite/web
+  branch: main
+
+site:
+  title: Adjarindo Creative Aksara
+  base_url: https://website-aaf.pages.dev
+
+collections:
+  - name: hero
+    label: Hero Section
+    files:
+      - name: hero_content
+        label: Konten Hero
+        path: index.html
+        selector: "[data-cms-edit^='hero.']"
+        fields:
+          - name: hero.title
+            label: Judul Utama Hero
+            type: string
+          - name: hero.subtitle
+            label: Subtitle / Deskripsi Hero
+            type: text
+
+  - name: programs
+    label: Program Andalan
+    path: index.html
+    selector: "[data-cms-edit^='programs.']"
+    fields:
+      - name: programs.section_title
+        label: Judul Section Program
+        type: string
+      - name: programs.program_1
+        label: Program 1 - Smart School Transformation
+        type: html
+      - name: programs.program_2
+        label: Program 2 - Kedinasan & Karir Hub
+        type: html
+      - name: programs.program_3
+        label: Program 3 - Guru Kreatif Digital
+        type: html
+
+  - name: faq
+    label: FAQ Tanya Jawab
+    path: index.html
+    selector: "[data-cms-edit^='faq.']"
+    fields:
+      - name: faq.section_title
+        label: Judul Section FAQ
+        type: string
+      - name: faq.item_1
+        label: FAQ 1
+        type: object
+        fields:
+          - name: q
+            label: Pertanyaan
+            type: string
+          - name: a
+            label: Jawaban
+            type: text
+      - name: faq.item_2
+        label: FAQ 2
+        type: object
+        fields:
+          - name: q
+            label: Pertanyaan
+            type: string
+          - name: a
+            label: Jawaban
+            type: text
+      - name: faq.item_3
+        label: FAQ 3
+        type: object
+        fields:
+          - name: q
+            label: Pertanyaan
+            type: string
+          - name: a
+            label: Jawaban
+            type: text
+      - name: faq.item_4
+        label: FAQ 4
+        type: object
+        fields:
+          - name: q
+            label: Pertanyaan
+            type: string
+          - name: a
+            label: Jawaban
+            type: text
+
+  - name: contact
+    label: Kontak Alamat
+    path: index.html
+    selector: "[data-cms-edit^='contact.']"
+    fields:
+      - name: contact.title
+        label: Judul Section Kontak
+        type: string
+      - name: contact.address
+        label: Alamat Perusahaan
+        type: string
+      - name: contact.phone
+        label: Nomor WhatsApp
+        type: string
+      - name: contact.email
+        label: Email
+        type: string
