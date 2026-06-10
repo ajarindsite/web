@@ -119,27 +119,40 @@
             color: #f9b23f;
         }
         .dropdown {
-            position: relative;
-        }
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background: rgba(30, 35, 48, 0.95);
-            backdrop-filter: blur(12px);
-            min-width: 210px;
-            border-radius: 20px;
-            padding: 0.8rem 0;
-            top: 30px;
-            left: -20px;
-            z-index: 200;
-        }
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-        .dropdown-content a {
-            display: block;
-            padding: 0.5rem 1.2rem;
-        }
+			position: relative;
+			display: inline-block;
+		}
+
+		.dropdown-content {
+			display: none;
+			position: absolute;
+			background: rgba(30, 35, 48, 0.95);
+			backdrop-filter: blur(12px);
+			min-width: 220px;
+			border-radius: 20px;
+			padding: 0.8rem 0;
+			top: 35px;
+			left: -20px;
+			z-index: 1000;
+			border: 1px solid rgba(255,255,255,0.2);
+		}
+
+		.dropdown:hover .dropdown-content {
+			display: block;
+		}
+
+		.dropdown-content a {
+			display: block;
+			padding: 0.6rem 1.2rem;
+			text-decoration: none;
+			color: inherit;
+			transition: 0.2s;
+		}
+
+		.dropdown-content a:hover {
+			background: rgba(249, 178, 63, 0.2);
+			color: #f9b23f;
+		}
         .theme-toggle {
             background: rgba(255,255,255,0.2);
             border: none;
@@ -323,11 +336,12 @@
             <div class="dropdown">
                 <a href="#">Demo <i class="fas fa-chevron-down"></i></a>
                 <div class="dropdown-content">
-                    <a href="lms-app/">Demo LMS App</a>
-                    <a href="web-personal/">Demo Web Personal</a>
-                    <a href="keuangan/">Demo Web Keuangan</a>
-                    <a href="teacher-hub/">Demo Web Teacher Hub</a>
-                    <a href="blog/">Demo Web Artikel</a>
+                    <a href="lms-app/"><i class="fas fa-graduation-cap"></i> Demo LMS App</a>
+					<a href="web-personal/"><i class="fas fa-user"></i> Demo Web Personal</a>
+					<a href="keuangan/"><i class="fas fa-chart-line"></i> Demo Web Keuangan</a>
+					<a href="teacher-hub/"><i class="fas fa-chalkboard"></i> Demo Web Teacher Hub</a>
+					<a href="blog/"><i class="fas fa-blog"></i> Demo Web Artikel</a>
+					<a href="cbt/"><i class="fas fa-laptop"></i> Demo Online CBT</a>					
                 </div>
             </div>
             <a href="#galeri">Galeri</a>
