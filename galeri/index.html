@@ -234,34 +234,22 @@
     </div>
 
     <script>
-        // ========== GANTI ID SPREADSHEET KAMU DI SINI ==========
-        // Cara dapat ID: buka spreadsheet → lihat URL → copy ID dari antara /d/ dan /edit
-        // Contoh URL: https://docs.google.com/spreadsheets/d/1c_g5DMzvwokSRIPF36AnSsBv_SUx8MpJOhYInCrZUnY/edit
-        // Maka ID-nya: 1ABC123DEF456GHI789
-        
-        const SPREADSHEET_ID = "2PACX-1vSdHS7xdmNr7b5yCY4rN-ei4kAaGlTWFCvLgHobrs5EEdQv-wyty3AoE6rG_zU3LYz_ClnRTzdgiLQA";
-        const SHEET_NAME = "Sheet1";
+        // 🔥 COPY PASTE URL DARI GOOGLE SHEETS KAMU DI SINI 🔥
+        const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSdHS7xdmNr7b5yCY4rN-ei4kAaGlTWFCvLgHobrs5EEdQv-wyty3AoE6rG_zU3LYz_ClnRTzdgiLQA/pub?output=csv";
         const GITHUB_RAW_URL = "https://raw.githubusercontent.com/ajarindsite/web/main/galeri-img/";
 
         async function loadGallery() {
             const container = document.getElementById('galleryContainer');
+            container.innerHTML = '<div class="loading"><div class="spinner"></div><p>Memuat galeri...</p></div>';
             
-            if (SPREADSHEET_ID === "GANTI_DENGAN_ID_SPREADSHEET_KAMU") {
-                container.innerHTML = `
-                    <div class="glass-card" style="padding: 3rem; text-align: center;">
-                        <i class="fas fa-cog" style="font-size: 3rem;"></i>
-                        <p style="margin-top: 1rem;">⚠️ Belum ada ID Spreadsheet yang diisi!</p>
-                        <p style="font-size: 0.8rem;">Ganti <code>SPREADSHEET_ID</code> di file index.html dengan ID Google Spreadsheet kamu.</p>
-                    </div>
-                `;
-                return;
-            }
-
             try {
-                const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${SHEET_NAME}`;
-                const response = await fetch(url);
+                console.log("Mencoba mengambil data dari:", CSV_URL);
+                const response = await fetch(CSV_URL);
                 const csvText = await response.text();
+                console.log("Data CSV berhasil diambil, panjang:", csvText.length);
+                
                 const rows = parseCSV(csvText);
+                console.log("Jumlah baris:", rows.length);
                 
                 if (rows.length <= 1) {
                     container.innerHTML = `
@@ -269,6 +257,7 @@
                             <i class="fas fa-images" style="font-size: 3rem; opacity: 0.5;"></i>
                             <p style="margin-top: 1rem;">Belum ada data galeri.</p>
                             <p style="font-size: 0.8rem;">Isi spreadsheet dengan format: Judul, Deskripsi, Nama File Gambar, Tanggal</p>
+                            <p style="font-size: 0.7rem; margin-top: 0.5rem;">Baris pertama harus header: Judul | Deskripsi | Nama File Gambar | Tanggal</p>
                         </div>
                     `;
                     return;
@@ -283,16 +272,19 @@
                 const dateIndex = headers.findIndex(h => h && h.toLowerCase().includes('tanggal'));
                 
                 let html = '<div class="gallery-grid">';
+                let dataCount = 0;
                 
                 for (let i = 0; i < dataRows.length; i++) {
                     const row = dataRows[i];
                     if (!row || row.length < 2) continue;
+                    if (row.length === 1 && !row[0]) continue;
                     
+                    dataCount++;
                     const title = (titleIndex >= 0 && row[titleIndex]) ? row[titleIndex] : "Kegiatan Adjarindo";
                     const desc = (descIndex >= 0 && row[descIndex]) ? row[descIndex] : "Dokumentasi kegiatan";
                     const imgFile = (imgIndex >= 0 && row[imgIndex]) ? row[imgIndex].trim() : "";
                     const date = (dateIndex >= 0 && row[dateIndex]) ? row[dateIndex] : "";
-                    const imgUrl = imgFile ? GITHUB_RAW_URL + imgFile : "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600";
+                    const imgUrl = imgFile ? GITHUB_RAW_URL + encodeURIComponent(imgFile) : "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600";
                     
                     html += `
                         <div class="glass-card gallery-item" onclick='openDetail(${JSON.stringify({title, desc, imgUrl, date})})'>
@@ -307,16 +299,28 @@
                 }
                 
                 html += '</div>';
-                container.innerHTML = html;
+                
+                if (dataCount === 0) {
+                    container.innerHTML = `
+                        <div class="glass-card" style="padding: 3rem; text-align: center;">
+                            <i class="fas fa-images" style="font-size: 3rem; opacity: 0.5;"></i>
+                            <p style="margin-top: 1rem;">Belum ada data galeri yang valid.</p>
+                            <p style="font-size: 0.8rem;">Pastikan kolom terisi dengan benar.</p>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = html;
+                }
                 
             } catch (error) {
-                console.error(error);
+                console.error("Error detail:", error);
                 container.innerHTML = `
                     <div class="glass-card" style="padding: 3rem; text-align: center;">
                         <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #f9b23f;"></i>
                         <p style="margin-top: 1rem;">Gagal memuat galeri.</p>
-                        <p style="font-size: 0.8rem;">Pastikan Google Sheet sudah dipublikasikan ke CSV.</p>
-                        <p style="font-size: 0.7rem;">Cara: File → Share → Publish to web → Pilih CSV</p>
+                        <p style="font-size: 0.8rem;">Error: ${error.message}</p>
+                        <p style="font-size: 0.7rem;">Pastikan Google Sheet sudah dipublikasikan ke CSV.</p>
+                        <p style="font-size: 0.7rem;">Cara: File → Share → Publish to web → Entire Document → CSV → Publish</p>
                     </div>
                 `;
             }
