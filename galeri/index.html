@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeri Kegiatan - Adjarindo Creative Aksara</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0c10;
+            color: #f0f3f8;
+            line-height: 1.5;
+        }
+        .bg-unsplash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            object-fit: cover;
+        }
+        .overlay-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: rgba(0, 0, 0, 0.7);
+        }
+        .glass-card {
+            background: rgba(20, 28, 40, 0.5);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: transform 0.3s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-5px);
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 2rem;
+            background: rgba(10, 14, 23, 0.7);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            flex-wrap: wrap;
+        }
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #f9b23f, #ef7e2e);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.7rem;
+            color: white;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 0.8rem 1.6rem;
+            border-radius: 40px;
+            color: inherit;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .btn-outline:hover {
+            border-color: #f9b23f;
+            color: #f9b23f;
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .gallery-item {
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .gallery-img {
+            width: 100%;
+            height: 220px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px 20px 0 0;
+        }
+        .gallery-info {
+            padding: 1.2rem;
+        }
+        .gallery-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #f9b23f;
+        }
+        .gallery-desc {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .gallery-date {
+            font-size: 0.7rem;
+            opacity: 0.5;
+            margin-top: 0.5rem;
+        }
+        .loading {
+            text-align: center;
+            padding: 3rem;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(249,178,63,0.3);
+            border-top-color: #f9b23f;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .modal-img {
+            width: 100%;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+        }
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: white;
+            transition: 0.2s;
+        }
+        .modal-close:hover {
+            color: #f9b23f;
+        }
+        footer {
+            margin-top: 3rem;
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.15);
+        }
+        @media (max-width: 800px) {
+            .navbar { flex-direction: column; gap: 12px; }
+            .container { padding: 1rem; }
+            .gallery-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <img class="bg-unsplash" src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format" alt="Galeri">
+    <div class="overlay-bg"></div>
+
+    <div class="navbar">
+        <div class="logo-area">
+            <div class="logo-icon"><i class="fas fa-images"></i></div>
+            <div><h1>Galeri Kegiatan</h1><p style="font-size:0.7rem;">Adjarindo Creative Aksara</p></div>
+        </div>
+        <a href="../index.html" class="btn-outline"><i class="fas fa-arrow-left"></i> Kembali ke Beranda</a>
+    </div>
+
+    <div class="container">
+        <div class="glass-card" style="padding: 1.5rem; text-align: center; margin-bottom: 2rem;">
+            <i class="fas fa-camera" style="font-size: 2.5rem; color: #f9b23f;"></i>
+            <h1 style="margin: 0.5rem 0;">Kegiatan & Dokumentasi</h1>
+            <p>Berikut adalah dokumentasi kegiatan workshop, bootcamp, dan event Adjarindo Creative Aksara.</p>
+        </div>
+
+        <div id="galleryContainer">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Memuat galeri...</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Adjarindo Creative Aksara | Dokumentasi Kegiatan</p>
+        </footer>
+    </div>
+
+    <div id="detailModal" class="modal">
+        <span class="modal-close" onclick="closeModal()">&times;</span>
+        <div class="modal-content glass-card" style="padding: 1.5rem;">
+            <img id="modalImg" class="modal-img" src="" alt="">
+            <h2 id="modalTitle" style="color: #f9b23f;"></h2>
+            <p id="modalDesc" style="margin: 1rem 0; line-height: 1.6;"></p>
+            <p id="modalDate" style="font-size: 0.8rem; opacity: 0.6;"></p>
+            <button class="btn-outline" style="margin-top: 1rem; width: 100%;" onclick="closeModal()">Tutup</button>
+        </div>
+    </div>
+
+    <script>
+        // ========== GANTI INI DENGAN ID SPREADSHEET KAMU ==========
+        const SPREADSHEET_ID = "2PACX-1vSdHS7xdmNr7b5yCY4rN-ei4kAaGlTWFCvLgHobrs5EEdQv-wyty3AoE6rG_zU3LYz_ClnRTzdgiLQA";
+        const SHEET_NAME = "Sheet1";
+        const GITHUB_RAW_URL = "https://raw.githubusercontent.com/ajarindsite/web/main/galeri-img/";
+
+        async function loadGallery() {
+            const container = document.getElementById('galleryContainer');
+            
+            if (SPREADSHEET_ID === "MASUKKAN_ID_SPREADSHEET_KAMU_DISINI") {
+                container.innerHTML = `
+                    <div class="glass-card" style="padding: 3rem; text-align: center;">
+                        <i class="fas fa-cog" style="font-size: 3rem;"></i>
+                        <p style="margin-top: 1rem;">⚠️ Belum ada ID Spreadsheet yang diisi!</p>
+                        <p style="font-size: 0.8rem;">Ganti <code>SPREADSHEET_ID</code> di file index.html dengan ID Google Spreadsheet kamu.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${SHEET_NAME}`;
+                const response = await fetch(url);
+                const csvText = await response.text();
+                const rows = parseCSV(csvText);
+                
+                if (rows.length <= 1) {
+                    container.innerHTML = `
+                        <div class="glass-card" style="padding: 3rem; text-align: center;">
+                            <i class="fas fa-images" style="font-size: 3rem; opacity: 0.5;"></i>
+                            <p style="margin-top: 1rem;">Belum ada data galeri.</p>
+                            <p style="font-size: 0.8rem;">Isi spreadsheet dengan format: Judul, Deskripsi, Nama File Gambar, Tanggal</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const headers = rows[0];
+                const dataRows = rows.slice(1);
+                
+                const titleIndex = headers.findIndex(h => h && h.toLowerCase().includes('judul'));
+                const descIndex = headers.findIndex(h => h && h.toLowerCase().includes('deskripsi'));
+                const imgIndex = headers.findIndex(h => h && (h.toLowerCase().includes('gambar') || h.toLowerCase().includes('file')));
+                const dateIndex = headers.findIndex(h => h && h.toLowerCase().includes('tanggal'));
+                
+                let html = '<div class="gallery-grid">';
+                
+                for (let i = 0; i < dataRows.length; i++) {
+                    const row = dataRows[i];
+                    if (!row || row.length < 2) continue;
+                    
+                    const title = (titleIndex >= 0 && row[titleIndex]) ? row[titleIndex] : "Kegiatan Adjarindo";
+                    const desc = (descIndex >= 0 && row[descIndex]) ? row[descIndex] : "Dokumentasi kegiatan";
+                    const imgFile = (imgIndex >= 0 && row[imgIndex]) ? row[imgIndex].trim() : "";
+                    const date = (dateIndex >= 0 && row[dateIndex]) ? row[dateIndex] : "";
+                    const imgUrl = imgFile ? GITHUB_RAW_URL + imgFile : "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600";
+                    
+                    html += `
+                        <div class="glass-card gallery-item" onclick='openDetail(${JSON.stringify({title, desc, imgUrl, date})})'>
+                            <div class="gallery-img" style="background-image: url('${imgUrl}');"></div>
+                            <div class="gallery-info">
+                                <div class="gallery-title">${escapeHtml(title)}</div>
+                                <div class="gallery-desc">${escapeHtml(desc.substring(0, 100))}${desc.length > 100 ? '...' : ''}</div>
+                                ${date ? `<div class="gallery-date"><i class="far fa-calendar-alt"></i> ${escapeHtml(date)}</div>` : ''}
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                html += '</div>';
+                container.innerHTML = html;
+                
+            } catch (error) {
+                console.error(error);
+                container.innerHTML = `
+                    <div class="glass-card" style="padding: 3rem; text-align: center;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #f9b23f;"></i>
+                        <p style="margin-top: 1rem;">Gagal memuat galeri.</p>
+                        <p style="font-size: 0.8rem;">Pastikan Google Sheet sudah dipublikasikan ke CSV.</p>
+                        <p style="font-size: 0.7rem;">Cara: File → Share → Publish to web → Pilih CSV</p>
+                    </div>
+                `;
+            }
+        }
+        
+        function parseCSV(csvText) {
+            const rows = [];
+            const lines = csvText.split(/\r?\n/);
+            for (const line of lines) {
+                if (!line.trim()) continue;
+                const row = [];
+                let inQuote = false;
+                let current = "";
+                for (let i = 0; i < line.length; i++) {
+                    const char = line[i];
+                    if (char === '"') {
+                        inQuote = !inQuote;
+                    } else if (char === ',' && !inQuote) {
+                        row.push(current.trim());
+                        current = "";
+                    } else {
+                        current += char;
+                    }
+                }
+                row.push(current.trim());
+                rows.push(row);
+            }
+            return rows;
+        }
+        
+        function escapeHtml(text) {
+            if (!text) return "";
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function openDetail(item) {
+            document.getElementById('modalImg').src = item.imgUrl;
+            document.getElementById('modalTitle').innerText = item.title;
+            document.getElementById('modalDesc').innerHTML = escapeHtml(item.desc);
+            document.getElementById('modalDate').innerHTML = item.date ? `<i class="far fa-calendar-alt"></i> ${escapeHtml(item.date)}` : '';
+            document.getElementById('detailModal').style.display = 'flex';
+        }
+        
+        function closeModal() {
+            document.getElementById('detailModal').style.display = 'none';
+        }
+        
+        loadGallery();
+    </script>
+</body>
+</html>
