@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Web Keuangan - Adjarindo Creative Aksara</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0c10;
+            color: #f0f3f8;
+            line-height: 1.5;
+        }
+        .bg-unsplash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            object-fit: cover;
+        }
+        .overlay-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: rgba(0, 0, 0, 0.7);
+        }
+        .glass-card {
+            background: rgba(20, 28, 40, 0.5);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 2rem;
+            background: rgba(10, 14, 23, 0.7);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            flex-wrap: wrap;
+        }
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #f9b23f, #ef7e2e);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.7rem;
+            color: white;
+        }
+        .btn-primary {
+            background: linear-gradient(95deg, #f9b23f, #ef7e2e);
+            border: none;
+            padding: 0.8rem 1.6rem;
+            border-radius: 40px;
+            font-weight: bold;
+            color: #1f1a12;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 0.8rem 1.6rem;
+            border-radius: 40px;
+            color: inherit;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .btn-sm {
+            background: rgba(249, 178, 63, 0.2);
+            border: 1px solid rgba(249, 178, 63, 0.4);
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .stat-card {
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 2rem 0 1rem;
+        }
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: #f9b23f;
+            margin-top: 8px;
+            border-radius: 4px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        th {
+            color: #f9b23f;
+        }
+        .status-paid {
+            color: #4ade80;
+        }
+        .status-pending {
+            color: #fbbf24;
+        }
+        .status-overdue {
+            color: #f87171;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            max-width: 400px;
+            text-align: center;
+        }
+        footer {
+            margin-top: 4rem;
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.15);
+        }
+        .premium-badge {
+            background: linear-gradient(135deg, #f9b23f, #ef7e2e);
+            color: #1f1a12;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            margin-left: 0.5rem;
+        }
+        @media (max-width: 800px) {
+            .navbar { flex-direction: column; gap: 12px; }
+            .container { padding: 1rem; }
+            table, thead, tbody, th, td, tr { display: block; }
+            td { padding: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <img class="bg-unsplash" src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2072&auto=format" alt="Finance Demo">
+    <div class="overlay-bg"></div>
+
+    <div class="navbar">
+        <div class="logo-area">
+            <div class="logo-icon"><i class="fas fa-chart-line"></i></div>
+            <div><h1>SekolahKu Finance</h1><p style="font-size:0.7rem;">Demo Aplikasi Keuangan</p></div>
+        </div>
+        <div style="display: flex; gap: 0.8rem;">
+            <a href="../index.html" class="btn-outline"><i class="fas fa-arrow-left"></i> Kembali</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Dashboard Summary -->
+        <div class="glass-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                <div>
+                    <p style="color: #9ca3af;">Total Saldo</p>
+                    <h2 style="font-size: 2rem;">Rp 856.750.000</h2>
+                </div>
+                <div>
+                    <p style="color: #9ca3af;">Pemasukan Bulanan</p>
+                    <h3 style="color: #4ade80;">+Rp 124.500.000</h3>
+                </div>
+                <div>
+                    <p style="color: #9ca3af;">Pengeluaran Bulanan</p>
+                    <h3 style="color: #f87171;">-Rp 87.200.000</h3>
+                </div>
+                <button class="btn-primary" id="premiumNotif" style="padding: 0.5rem 1.2rem;"><i class="fas fa-crown"></i> Premium</button>
+            </div>
+        </div>
+
+        <!-- Stats Ringkas -->
+        <div class="stats-grid">
+            <div class="glass-card stat-card"><h2 style="color: #f9b23f;">342</h2><p>Siswa Aktif</p></div>
+            <div class="glass-card stat-card"><h2 style="color: #f9b23f;">Rp 28,5Jt</h2><p>Tagihan Bulan Ini</p></div>
+            <div class="glass-card stat-card"><h2 style="color: #f9b23f;">76%</h2><p>Tingkat Pembayaran</p></div>
+            <div class="glass-card stat-card"><h2 style="color: #f9b23f;">12</h2><p>Tagihan Lewat Jatuh Tempo</p></div>
+        </div>
+
+        <!-- Daftar Tagihan Siswa -->
+        <h2 class="section-title"><i class="fas fa-file-invoice"></i> Daftar Tagihan Bulan Ini</h2>
+        <div class="glass-card" style="overflow-x: auto; padding: 0;">
+            <table>
+                <thead>
+                    <tr><th>NIS</th><th>Nama Siswa</th><th>Kelas</th><th>Tagihan</th><th>Jatuh Tempo</th><th>Status</th><th>Aksi</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>2024001</td><td>Andi Saputra</td><td>XII RPL</td><td>Rp 850.000</td><td>15 Jan 2026</td><td class="status-paid"><i class="fas fa-check-circle"></i> Lunas</td><td><button class="btn-sm" onclick="showPremiumNotif()">Detail</button></td></tr>
+                    <tr><td>2024002</td><td>Budi Santoso</td><td>XII RPL</td><td>Rp 850.000</td><td>15 Jan 2026</td><td class="status-pending"><i class="fas fa-clock"></i> Menunggu</td><td><button class="btn-sm" onclick="showPremiumNotif()">Bayar</button></td></tr>
+                    <tr><td>2024003</td><td>Citra Dewi</td><td>XII MM</td><td>Rp 850.000</td><td>15 Jan 2026</td><td class="status-paid"><i class="fas fa-check-circle"></i> Lunas</td><td><button class="btn-sm" onclick="showPremiumNotif()">Detail</button></td></tr>
+                    <tr><td>2024004</td><td>Dian Permata</td><td>XI RPL</td><td>Rp 850.000</td><td>15 Jan 2026</td><td class="status-overdue"><i class="fas fa-exclamation-triangle"></i> Lewat 3 hari</td><td><button class="btn-sm" onclick="showPremiumNotif()">Bayar</button></td></tr>
+                    <tr><td>2024005</td><td>Eka Fitria</td><td>XI MM</td><td>Rp 850.000</td><td>15 Jan 2026</td><td class="status-pending"><i class="fas fa-clock"></i> Menunggu</td><td><button class="btn-sm" onclick="showPremiumNotif()">Bayar</button></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Input Pembayaran (Form) -->
+        <h2 class="section-title"><i class="fas fa-credit-card"></i> Input Pembayaran</h2>
+        <div class="glass-card" style="padding: 1.5rem;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                <input type="text" id="nisInput" placeholder="NIS Siswa" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 30px; padding: 0.8rem; color: white;">
+                <input type="text" id="namaInput" placeholder="Nama Siswa" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 30px; padding: 0.8rem; color: white;">
+                <input type="number" id="jumlahInput" placeholder="Jumlah Pembayaran" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 30px; padding: 0.8rem; color: white;">
+                <select id="bulanInput" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 30px; padding: 0.8rem; color: white;">
+                    <option>Januari 2026</option><option>Februari 2026</option><option>Maret 2026</option>
+                </select>
+            </div>
+            <button class="btn-primary" style="margin-top: 1rem; width: 100%; justify-content: center;" onclick="simulatePayment()"><i class="fas fa-save"></i> Simpan Pembayaran</button>
+            <p style="text-align: center; margin-top: 1rem; font-size: 0.8rem; color: #f9b23f;"><i class="fas fa-lock"></i> Fitur premium untuk mengirim notifikasi WA otomatis ke wali murid</p>
+        </div>
+
+        <!-- Riwayat Transaksi -->
+        <h2 class="section-title"><i class="fas fa-history"></i> Riwayat Transaksi Terbaru</h2>
+        <div class="glass-card" style="padding: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 0.8rem 0;">
+                <span><i class="fas fa-receipt"></i> INV-2026-001</span><span>Andi Saputra</span><span style="color: #4ade80;">+Rp 850.000</span><span>02 Jan 2026</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 0.8rem 0;">
+                <span><i class="fas fa-receipt"></i> INV-2026-002</span><span>Citra Dewi</span><span style="color: #4ade80;">+Rp 850.000</span><span>05 Jan 2026</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 0.8rem 0;">
+                <span><i class="fas fa-receipt"></i> INV-2026-003</span><span>Budi Santoso</span><span style="color: #fbbf24;">Menunggu</span><span>-</span>
+            </div>
+            <button class="btn-outline" style="width: 100%; margin-top: 1rem;" onclick="showPremiumNotif()">Lihat Semua Riwayat <i class="fas fa-crown" style="font-size: 0.8rem;"></i></button>
+        </div>
+
+        <!-- Laporan Keuangan -->
+        <div class="glass-card" style="padding: 1.5rem; text-align: center; margin-top: 1.5rem;">
+            <i class="fas fa-chart-pie" style="font-size: 2rem; color: #f9b23f;"></i>
+            <h3>Laporan Keuangan Lengkap</h3>
+            <p>Grafik pemasukan, laporan per kelas, rekap per bulan</p>
+            <button class="btn-primary" style="margin-top: 1rem;" onclick="showPremiumNotif()"><i class="fas fa-download"></i> Generate Laporan (Premium)</button>
+        </div>
+
+        <div class="glass-card" style="padding: 1.5rem; text-align: center; margin-top: 1rem;">
+            <p>💡 <strong>Catatan:</strong> Demo ini menunjukkan fitur aplikasi keuangan sekolah. Untuk akses penuh semua fitur (notifikasi WA, export Excel, dashboard grafik interaktif, API bank), gunakan versi premium.</p>
+            <a href="../index.html#kontak" class="btn-primary" style="margin-top: 1rem;"><i class="fab fa-whatsapp"></i> Langganan Premium Sekarang</a>
+        </div>
+
+        <footer><p>Demo Aplikasi Keuangan Sekolah - Adjarindo Creative Aksara</p></footer>
+    </div>
+
+    <!-- Modal Premium -->
+    <div id="premiumModal" class="modal">
+        <div class="modal-content glass-card" style="padding: 2rem;">
+            <i class="fas fa-crown" style="font-size: 4rem; color: #f9b23f;"></i>
+            <h2 style="margin: 1rem 0;">✨ Fitur Premium</h2>
+            <p>Fitur ini hanya tersedia di <strong>versi Premium</strong>.</p>
+            <div style="text-align: left; margin: 1rem 0;">
+                <p><i class="fas fa-check-circle" style="color: #4ade80;"></i> Notifikasi WA otomatis ke wali murid</p>
+                <p><i class="fas fa-check-circle" style="color: #4ade80;"></i> Export laporan Excel/PDF</p>
+                <p><i class="fas fa-check-circle" style="color: #4ade80;"></i> Dashboard grafik interaktif</p>
+                <p><i class="fas fa-check-circle" style="color: #4ade80;"></i> Integrasi pembayaran via QRIS/Bank</p>
+                <p><i class="fas fa-check-circle" style="color: #4ade80;"></i> Multi user (Admin, Bendahara, Kepsek)</p>
+            </div>
+            <a href="../index.html#kontak" class="btn-primary" style="width: 100%; justify-content: center;"><i class="fab fa-whatsapp"></i> Hubungi Sales</a>
+            <button class="btn-outline" style="margin-top: 1rem; width: 100%;" onclick="closePremiumModal()">Tutup</button>
+        </div>
+    </div>
+
+    <script>
+        function showPremiumNotif() {
+            document.getElementById('premiumModal').style.display = 'flex';
+        }
+        function closePremiumModal() {
+            document.getElementById('premiumModal').style.display = 'none';
+        }
+        function simulatePayment() {
+            const nis = document.getElementById('nisInput').value;
+            const nama = document.getElementById('namaInput').value;
+            const jumlah = document.getElementById('jumlahInput').value;
+            if(!nis || !nama || !jumlah) {
+                alert('Harap isi NIS, Nama, dan Jumlah Pembayaran');
+                return;
+            }
+            alert(`✅ Pembayaran sebesar Rp ${parseInt(jumlah).toLocaleString()} untuk ${nama} (NIS: ${nis}) berhasil dicatat.\n\n📱 Fitur kirim notifikasi WA ke wali murid hanya tersedia di versi premium.`);
+            document.getElementById('nisInput').value = '';
+            document.getElementById('namaInput').value = '';
+            document.getElementById('jumlahInput').value = '';
+        }
+        // Tutup modal klik di luar
+        window.onclick = function(event) {
+            const modal = document.getElementById('premiumModal');
+            if (event.target == modal) modal.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

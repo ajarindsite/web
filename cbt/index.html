@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Online CBT - Adjarindo Creative Aksara</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0c10;
+            color: #f0f3f8;
+            line-height: 1.5;
+        }
+        .bg-unsplash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            object-fit: cover;
+        }
+        .overlay-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: rgba(0, 0, 0, 0.7);
+        }
+        .glass-card {
+            background: rgba(20, 28, 40, 0.5);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 2rem;
+            background: rgba(10, 14, 23, 0.7);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            flex-wrap: wrap;
+        }
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #f9b23f, #ef7e2e);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.7rem;
+            color: white;
+        }
+        .btn-primary {
+            background: linear-gradient(95deg, #f9b23f, #ef7e2e);
+            border: none;
+            padding: 0.8rem 1.6rem;
+            border-radius: 40px;
+            font-weight: bold;
+            color: #1f1a12;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 0.8rem 1.6rem;
+            border-radius: 40px;
+            color: inherit;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .quiz-option {
+            background: rgba(255,255,255,0.08);
+            padding: 1rem;
+            margin: 0.8rem 0;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid transparent;
+        }
+        .quiz-option:hover {
+            background: rgba(249, 178, 63, 0.2);
+            border-color: rgba(249, 178, 63, 0.4);
+        }
+        .quiz-option.selected {
+            background: rgba(249, 178, 63, 0.3);
+            border-color: #f9b23f;
+        }
+        .timer {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #f9b23f;
+        }
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+        .question-number {
+            color: #f9b23f;
+            margin-bottom: 1rem;
+        }
+        footer {
+            margin-top: 3rem;
+            padding: 1.5rem;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.15);
+        }
+        @media (max-width: 800px) {
+            .navbar { flex-direction: column; gap: 12px; }
+            .container { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <img class="bg-unsplash" src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=2070&auto=format" alt="CBT Demo">
+    <div class="overlay-bg"></div>
+
+    <div class="navbar">
+        <div class="logo-area">
+            <div class="logo-icon"><i class="fas fa-laptop"></i></div>
+            <div><h1>Adjarindo CBT</h1><p style="font-size:0.7rem;">Computer Based Test Demo</p></div>
+        </div>
+        <a href="../index.html" class="btn-outline"><i class="fas fa-arrow-left"></i> Kembali ke Beranda</a>
+    </div>
+
+    <div class="container">
+        <div class="glass-card" style="padding: 1.5rem; margin-bottom: 1.5rem; text-align: center;">
+            <i class="fas fa-graduation-cap" style="font-size: 2.5rem; color: #f9b23f;"></i>
+            <h1 style="margin: 0.5rem 0;">Ujian Online CBT</h1>
+            <p>Try Out Masuk Kedinasan 2026 - Paket 01</p>
+            <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 1rem;">
+                <div><span class="timer" id="timer">20:00</span><br>Waktu Tersisa</div>
+                <div><span id="currentQ" style="font-size: 1.5rem; font-weight: bold;">1</span> / <span id="totalQ">5</span><br>Soal Terjawab</div>
+            </div>
+        </div>
+
+        <div class="glass-card" style="padding: 1.5rem;">
+            <div id="questionContainer">
+                <!-- Soal akan di-load via JS -->
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 2rem;">
+                <button class="btn-outline" id="prevBtn" onclick="prevQuestion()"><i class="fas fa-chevron-left"></i> Sebelumnya</button>
+                <button class="btn-primary" id="nextBtn" onclick="nextQuestion()">Selanjutnya <i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+
+        <!-- Navigasi Soal Grid -->
+        <div class="glass-card" style="padding: 1rem; margin-top: 1rem;">
+            <p style="margin-bottom: 0.5rem;">Navigasi Soal (klik nomor untuk langsung):</p>
+            <div id="navGrid" style="display: flex; gap: 0.5rem; flex-wrap: wrap;"></div>
+        </div>
+
+        <div class="glass-card" style="padding: 1rem; text-align: center; margin-top: 1rem;">
+            <button class="btn-primary" id="submitBtn" onclick="submitQuiz()" style="background: #ef7e2e;"><i class="fas fa-paper-plane"></i> Kumpulkan Jawaban</button>
+        </div>
+
+        <div class="glass-card" style="padding: 1.5rem; text-align: center; margin-top: 1rem;">
+            <p>💡 <strong>Demo CBT ini menampilkan simulasi ujian online.</strong> Untuk fitur lengkap (bank soal ribuan, auto grading, sertifikat digital, analisis butir soal, anti cheating, proctoring), gunakan versi premium.</p>
+            <a href="../index.html#kontak" class="btn-primary" style="margin-top: 1rem;"><i class="fab fa-whatsapp"></i> Langganan Premium Sekarang</a>
+        </div>
+
+        <footer><p>Demo Online CBT - Adjarindo Creative Aksara</p></footer>
+    </div>
+
+    <!-- Modal Hasil -->
+    <div id="resultModal" class="modal" style="display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index:1000; align-items:center; justify-content:center;">
+        <div class="modal-content glass-card" style="max-width: 450px; padding: 2rem; text-align: center;">
+            <i class="fas fa-chart-simple" style="font-size: 3rem; color: #f9b23f;"></i>
+            <h2 style="margin: 1rem 0;">Hasil Ujian</h2>
+            <p id="resultText"></p>
+            <button class="btn-primary" style="margin-top: 1rem;" onclick="closeResultModal()">Tutup</button>
+            <p style="margin-top: 1rem; font-size: 0.8rem;"><i class="fas fa-crown"></i> Fitur sertifikat & analisis detail tersedia di versi premium</p>
+        </div>
+    </div>
+
+    <script>
+        // Data Soal
+        const questions = [
+            { text: "Apa kepanjangan dari AI dalam teknologi?", options: ["Artificial Intelligence", "Automated Input", "Advanced Integration", "Automatic Internet"], correct: 0 },
+            { text: "Manakah yang termasuk software LMS?", options: ["Google Meet", "Moodle", "Photoshop", "Excel"], correct: 1 },
+            { text: "Apa fungsi utama dari JAMSTACK?", options: ["Database management", "Membangun web cepat & aman", "Desain grafis", "Editing video"], correct: 1 },
+            { text: "Berapa persentase dana BOS yang bisa digunakan untuk digitalisasi sekolah?", options: ["10%", "30%", "50%", "Sesuai ketentuan"], correct: 3 },
+            { text: "Aplikasi apa yang digunakan untuk membuat website tanpa coding?", options: ["Adjarindo Web Builder", "Microsoft Word", "Adobe Photoshop", "Corel Draw"], correct: 0 }
+        ];
+        let currentIndex = 0;
+        let answers = new Array(questions.length).fill(null);
+
+        function renderQuestion() {
+            const q = questions[currentIndex];
+            const container = document.getElementById('questionContainer');
+            container.innerHTML = `
+                <div class="question-number">Soal ${currentIndex+1} dari ${questions.length}</div>
+                <h2 style="margin-bottom: 1.5rem;">${q.text}</h2>
+                ${q.options.map((opt, idx) => `
+                    <div class="quiz-option ${answers[currentIndex] === idx ? 'selected' : ''}" onclick="selectOption(${idx})">
+                        ${String.fromCharCode(65+idx)}. ${opt}
+                    </div>
+                `).join('')}
+            `;
+            updateNavGrid();
+            document.getElementById('currentQ').innerText = answers.filter(a => a !== null).length;
+        }
+
+        function selectOption(optIndex) {
+            answers[currentIndex] = optIndex;
+            renderQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentIndex < questions.length - 1) {
+                currentIndex++;
+                renderQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderQuestion();
+            }
+        }
+
+        function updateNavGrid() {
+            const grid = document.getElementById('navGrid');
+            grid.innerHTML = '';
+            for (let i = 0; i < questions.length; i++) {
+                const btn = document.createElement('button');
+                btn.textContent = i+1;
+                btn.style.background = answers[i] !== null ? '#f9b23f' : 'rgba(255,255,255,0.2)';
+                btn.style.color = answers[i] !== null ? '#1f1a12' : 'white';
+                btn.style.border = 'none';
+                btn.style.width = '40px';
+                btn.style.height = '40px';
+                btn.style.borderRadius = '50%';
+                btn.style.cursor = 'pointer';
+                btn.style.margin = '0.2rem';
+                btn.onclick = () => { currentIndex = i; renderQuestion(); };
+                grid.appendChild(btn);
+            }
+        }
+
+        function submitQuiz() {
+            const answered = answers.filter(a => a !== null).length;
+            if (answered < questions.length) {
+                alert(`Anda baru menjawab ${answered} dari ${questions.length} soal. Selesaikan semua soal terlebih dahulu!`);
+                return;
+            }
+            let score = 0;
+            answers.forEach((ans, idx) => {
+                if (ans === questions[idx].correct) score++;
+            });
+            const percent = (score / questions.length) * 100;
+            const resultText = `Nilai Anda: ${score}/${questions.length} (${percent}%)\n${percent >= 70 ? '🎉 Selamat! Anda Lulus Try Out!' : '📚 Tingkatkan lagi belajarnya, semangat!'}`;
+            document.getElementById('resultText').innerHTML = resultText.replace(/\n/g, '<br>');
+            document.getElementById('resultModal').style.display = 'flex';
+        }
+
+        function closeResultModal() {
+            document.getElementById('resultModal').style.display = 'none';
+        }
+
+        // Timer 20 menit (1200 detik)
+        let timeLeft = 1200;
+        const timerElement = document.getElementById('timer');
+        const timerInterval = setInterval(() => {
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                alert('⏰ Waktu habis! Ujian akan dikumpulkan otomatis.');
+                submitQuiz();
+            } else {
+                timeLeft--;
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerElement.textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+            }
+        }, 1000);
+
+        renderQuestion();
+    </script>
+    <style>
+        .modal { display: flex; }
+        #resultModal { display: none; }
+        #resultModal.modal { display: flex; }
+    </style>
+</body>
+</html>
