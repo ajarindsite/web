@@ -1,5 +1,3 @@
-# .pages.yml - letakkan di root folder repository Adjarindoweb
-
 backend:
   name: github
   repo: Adjarindoweb/Adjarindoweb
@@ -11,7 +9,7 @@ site:
 
 collections:
   - name: "hero"
-    label: "Hero Section (Bagian Pembuka)"
+    label: "Hero Section"
     files:
       - name: "hero_content"
         label: "Konten Hero"
@@ -26,21 +24,21 @@ collections:
             type: "text"
 
   - name: "advantages"
-    label: "Bagian Keunggulan (4 item)"
+    label: "Keunggulan (4 item)"
     path: "index.html"
     selector: "[data-cms-edit^='advantages.']"
     fields:
       - name: "advantages.1"
-        label: "Keunggulan 1 (Zero Code)"
+        label: "Keunggulan 1 - Zero Code"
         type: "html"
       - name: "advantages.2"
-        label: "Keunggulan 2 (Low Cost)"
+        label: "Keunggulan 2 - Low Cost"
         type: "html"
       - name: "advantages.3"
-        label: "Keunggulan 3 (High Performance)"
+        label: "Keunggulan 3 - High Performance"
         type: "html"
       - name: "advantages.4"
-        label: "Keunggulan 4 (Pendampingan HRD)"
+        label: "Keunggulan 4 - Pendampingan HRD"
         type: "html"
 
   - name: "programs"
@@ -70,7 +68,7 @@ collections:
         label: "Judul Section Galeri"
         type: "string"
       - name: "gallery.item_1"
-        label: "Item Galeri 1"
+        label: "Galeri Item 1"
         type: "object"
         fields:
           - name: "title"
@@ -83,7 +81,7 @@ collections:
             label: "URL Gambar"
             type: "string"
       - name: "gallery.item_2"
-        label: "Item Galeri 2"
+        label: "Galeri Item 2"
         type: "object"
         fields:
           - name: "title"
@@ -96,7 +94,7 @@ collections:
             label: "URL Gambar"
             type: "string"
       - name: "gallery.item_3"
-        label: "Item Galeri 3"
+        label: "Galeri Item 3"
         type: "object"
         fields:
           - name: "title"
@@ -109,7 +107,7 @@ collections:
             label: "URL Gambar"
             type: "string"
       - name: "gallery.item_4"
-        label: "Item Galeri 4"
+        label: "Galeri Item 4"
         type: "object"
         fields:
           - name: "title"
