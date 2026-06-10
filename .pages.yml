@@ -5,7 +5,7 @@ backend:
 
 site:
   title: Adjarindo Creative Aksara
-  base_url: https://adjarindo.pages.dev
+  base_url: https://website-aaf.pages.dev/
 
 collections:
   - name: "hero"
